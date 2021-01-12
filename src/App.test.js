@@ -10,26 +10,29 @@ import App from "./App";
 // set up enzyme's react adapter
 Enzyme.configure({ adapter: new Adapter() });
 
-// test("renders learn react link", () => {
-//   // shallow function takes jsx and returns a shallow wrapper
+// JS DOC ---- Used to coming back to the app months later!
+/**
+ * Factory function to create a ShallowWrapper for the App component.
+ * @function setup
+ * @returns {ShallowWrapper}
+ */
 
-//   const wrapper = shallow(<App />);
-//   expect(wrapper).toBeTruthy();
-// });
+const setup = () => shallow(<App />);
+
 test("renders without error", () => {
-  const wrapper = shallow(<App />);
+  const wrapper = setup();
   const appComponent = wrapper.find("[data-test='component-app']");
 
   // if the ASSERTION OR the expect method to find the appComponent to exist, then PASS
   expect(appComponent.length).toBe(1);
 });
 test("renders button", () => {
-  const wrapper = shallow(<App />);
+  const wrapper = setup();
   const button = wrapper.find("[data-test='increment-button']");
   expect(button.length).toBe(1);
 });
 test("renders counter display", () => {
-  const wrapper = shallow(<App />);
+  const wrapper = setup();
   const counterDisplay = wrapper.find("[data-test='counter-display']");
   expect(counterDisplay.length).toBe(1);
 });
