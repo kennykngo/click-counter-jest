@@ -46,13 +46,62 @@ test("counter starts at 0", () => {
   expect(count).toBe("0");
 });
 
-test("clicking on button increments counter display", () => {
-  const wrapper = setup();
-  // find the button
-  const button = findByTestAttr(wrapper, "increment-button");
-  // click the button
-  button.simulate("click");
-  // find the display and test that the number has been incremeneted
-  const count = findByTestAttr(wrapper, "count").text();
-  expect(count).toBe("1");
+describe("Increment", () => {
+  test("renders increment button", () => {
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, "increment-button");
+    expect(button.length).toBe(1);
+  });
+
+  test("counter increments when button is clicked", () => {
+    const wrapper = setup();
+    // find the button
+    const button = findByTestAttr(wrapper, "increment-button");
+    // click the button
+    button.simulate("click");
+    // find the display and test that the number has been incremeneted
+    const count = findByTestAttr(wrapper, "count").text();
+    expect(count).toBe("1");
+  });
 });
+
+describe("Decrement", () => {
+  test("renders decrement button", () => {
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, "decrement-button");
+    expect(button.length).toBe(1);
+  });
+  test("clicking decrement button decrements counter display when state is greater than 0", () => {
+    const wrapper = setup();
+
+    // simulating a button click to make counter > 0
+    const incButton = findByTestAttr(wrapper, "increment-button");
+    incButton.simulate("click");
+
+    // simulating a DECREMENT to make counter back to 0
+    const decButton = findByTestAttr(wrapper, "decrement-button");
+    decButton.simulate("click");
+
+    const count = findByTestAttr(wrapper, "count").text();
+    expect(count).toBe("0");
+  });
+});
+
+describe("Error when counter goes below 0", () => {
+  test("error does not show when not needed", () => {
+    const wrapper = setup();
+    // creating a reference to the data-test="error-message"
+    const errorMessage = findByTestAttr(wrapper, "error-message");
+    const errorHasHiddenClass = errorMessage.hasClass("hidden");
+  });
+});
+
+// test("no count below 0", () => {
+//   const wrapper = setup();
+//   const button = findByTestAttr(wrapper, "decrement-button");
+//   button.simulate("click");
+//   const count = findByTestAttr(wrapper, "count").text();
+//   expect(count).toBe("0");
+//   const errorMessage = findByTestAttr(wrapper, "error-message").text();
+//   expect(errorMessage).toBe("Error, counter can't go below zero");
+// });
