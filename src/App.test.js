@@ -71,6 +71,7 @@ describe("Decrement", () => {
     const button = findByTestAttr(wrapper, "decrement-button");
     expect(button.length).toBe(1);
   });
+
   test("clicking decrement button decrements counter display when state is greater than 0", () => {
     const wrapper = setup();
 
@@ -93,9 +94,43 @@ describe("Error when counter goes below 0", () => {
     // creating a reference to the data-test="error-message"
     const errorMessage = findByTestAttr(wrapper, "error-message");
     const errorHasHiddenClass = errorMessage.hasClass("hidden");
+    expect(errorHasHiddenClass).toBe(true);
   });
 });
 
+describe("counter is 0 and decrement is clicked", () => {
+  // using describe so you can use beforeEach for shared setup
+  // initializing wrapper variable to be scoped in and out of the beforeEach method
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = setup();
+
+    const button = findByTestAttr(wrapper, "decrement-button");
+    button.simulate("click");
+  });
+
+  test("error shows", () => {
+    const errorMessage = findByTestAttr(wrapper, "error-message");
+    const errorHasHiddenClass = errorMessage.hasClass("hidden");
+    expect(errorHasHiddenClass).toBe(false);
+  });
+
+  test("counter still displays 0", () => {
+    const count = findByTestAttr(wrapper, "count").text();
+    expect(count).toBe("0");
+  });
+
+  test("Incrementing clears the error", () => {
+    const incButton = findByTestAttr(wrapper, "increment-button");
+    incButton.simulate("click");
+
+    // checking the error message
+    const errorMessage = findByTestAttr(wrapper, "error-message");
+    const errorHasHiddenClass = errorMessage.hasClass("hidden");
+    expect(errorHasHiddenClass).toBe(true);
+  });
+});
 // test("no count below 0", () => {
 //   const wrapper = setup();
 //   const button = findByTestAttr(wrapper, "decrement-button");

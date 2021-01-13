@@ -19,7 +19,13 @@ function App() {
       >
         "Error, counter can't go below zero"
       </h1>
-      <button onClick={() => setCount(count + 1)} data-test="increment-button">
+      <button
+        onClick={() => {
+          error && setError(false);
+          setCount(count + 1);
+        }}
+        data-test="increment-button"
+      >
         Increment counter
       </button>
       <button
